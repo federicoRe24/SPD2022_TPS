@@ -6,27 +6,27 @@
  *	de acuerdo al numero que representan.
  *
  *	Ejemplo:
- *   
- *	El numero 15 (0000001111) se representaria encendiendo los 
+ *
+ *	El numero 15 (0000001111) se representaria encendiendo los
  *	leds AMARILLO y NARANJA.
- *	Al pasar al numero 16 (0000010000), se deben apagar todos 
- *	los led anteriores y encenderse uno de los leds VERDES. 
- *	Notese, en el ejemplo los 0 representan los led apagados 
- *	y los 1 los led encendidos). 
- *   
+ *	Al pasar al numero 16 (0000010000), se deben apagar todos
+ *	los led anteriores y encenderse uno de los leds VERDES.
+ *	Notese, en el ejemplo los 0 representan los led apagados
+ *	y los 1 los led encendidos).
+ *
  *	-------------------------------------------------------
- *   
+ *
  *	Al presionarse el boton START, debe iniciar el cronometro.
- *	Volver a presionarlo hace que la secuencia se detenga. 
+ *	Volver a presionarlo hace que la secuencia se detenga.
  *  (Como si se hubiese presionado pausa).
  *	Al presionarse el boton RESET, el cronometro
  *	debe reiniciarse y arrancar de 0.
  *
- *	Tip: Modularizar la función que controla el encendido de los 
+ *	Tip: Modularizar la función que controla el encendido de los
  *	LEDS y de ser posible, todo el código para evitar repetir lineas lo mas posible.
- *  Usar millis para controlar el tiempo del contador para que el cambio de los 
- *	leds encendidos sea perceptible para el ojo humano y 
- *	documentar cada función creada en el código. 
+ *  Usar millis para controlar el tiempo del contador para que el cambio de los
+ *	leds encendidos sea perceptible para el ojo humano y
+ *	documentar cada función creada en el código.
  *	Un breve comentario que diga que es lo que hace esa función
  *  y de corresponder, que retorna).
 */
@@ -39,7 +39,7 @@
 #define FIRST_LED 4             //? First pin of the leds
 #define LAST_LED 13             //? Last pin of the leds
 #define BASE_MILLI_SECONDS 1000 //? Secods expresed in miliseconds
-#define MAX_SECONDS 1023  
+#define MAX_SECONDS 1023
 #define TAM 10
 //--- End Defines ---//
 
@@ -90,18 +90,18 @@ void start_array(int array[])
 void decimal_to_BIN(int number, int arrayBin[])
 {
 	int endIndex = TAM - 1;
-  	int numBin = 0;	
-  
+  	int numBin = 0;
+
   	while(number > 0)
     {
       	numBin = number % 2;
       	number /= 2;
-      	
+
       	arrayBin[endIndex] = numBin;
       	endIndex--;
-      
+
     }
-  
+
 }
 
 /*
@@ -109,7 +109,7 @@ void decimal_to_BIN(int number, int arrayBin[])
  * return: void
 */
 void print_array()
-{	
+{
   	Serial.print("Seconds: ");
   	Serial.print(appTimer);
  	Serial.print(" | Counter: ");
@@ -141,9 +141,9 @@ void shutdown_leds()
 */
 void show_leds(int array[])
 {
-  
+
   int array_iter = TAM-1;
-  
+
   for(int i = FIRST_LED; i <= LAST_LED; i++)
   {
     digitalWrite(i, array[array_iter]);
@@ -200,12 +200,12 @@ void sequence()
 {
     unsigned long millis_now = millis(); // 3000
     if (millis_now - millis_before >= BASE_MILLI_SECONDS)
-    { 
+    {
       	appTimer++;
       	// Inicio de secuencia
-      
+
       	if(cont <= MAX_SECONDS && flagEnd == 0)
-        { 
+        {
           if(button_start_flag == 1)
           {
             start_array(array);
@@ -220,16 +220,16 @@ void sequence()
         {
           flagEnd == 1;
         }
-      
+
       	// Fin de secuencia
-      
+
         millis_before = millis_now; // MB = 2000
     }
 }
 
 void setup()
 {
-  
+
   Serial.begin(9600);
   set_pins();
 }
@@ -239,6 +239,6 @@ void loop()
   	sequence();
   	reset_cont();
   	start_count();
-  
-  	delay(7); // Delay permitido
+
+  	delay(80); // Delay permitido
 }
